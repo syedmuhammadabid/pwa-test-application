@@ -3,7 +3,7 @@ export const compareAppVersion = () => {
     const cacheAppVer = localStorage.getItem("AppVersion");
     if (!cacheAppVer || !currentAppVersion) {
         // We dont have version key so reset cache
-        AppStorage.clearAppData();
+        localStorage.clear();
     } else {
         // Compare if major version is changed.
         const version = currentAppVersion.split(".");
