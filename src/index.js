@@ -3,6 +3,29 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { pwaTrackingListeners } from './pwaEventListeners';
+import { compareAppVersion } from './util';
+
+const isBrowser = typeof window !== "undefined";
+
+if (isBrowser) {
+    pwaTrackingListeners();
+}
+
+compareAppVersion();
+
+if (isBrowser && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+      navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(() => {
+              console.log("Service worker registered");
+          })
+          .catch((err) => {
+              console.log("Service worker registration failed", err);
+          });
+  });
+}
 
 ReactDOM.render(
   <React.StrictMode>
