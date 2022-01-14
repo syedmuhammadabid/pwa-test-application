@@ -20,7 +20,6 @@ if (isBrowser && "serviceWorker" in navigator) {
             registration.update();
         }
     });
-    window.location.reload();
     window.addEventListener("load", () => {
         navigator.serviceWorker
             .register("/service-worker.js")
