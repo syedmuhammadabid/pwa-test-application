@@ -3,7 +3,7 @@ self.skipWaiting();
 const staticCacheName = `site-static-v${
     Math.floor(Math.random() * 100) + Math.floor(Math.random() * 100)
 }`;
-const assets = ["/", "/index.html", "/logo192.png", "/logo512.png"];
+const assets = ["/logo192.png", "/logo512.png"];
 
 // install event
 self.addEventListener("install", (evt) => {
