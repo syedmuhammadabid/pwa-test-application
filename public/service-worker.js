@@ -1,4 +1,4 @@
-self.skipWaiting();
+// self.skipWaiting();
 
 const staticCacheName = `site-static-v${
     Math.floor(Math.random() * 100) + Math.floor(Math.random() * 100)
