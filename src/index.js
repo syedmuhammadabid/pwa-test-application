@@ -22,7 +22,7 @@ if (isBrowser && "serviceWorker" in navigator) {
     });
     window.addEventListener("load", () => {
         navigator.serviceWorker
-            .register("/service-worker.js")
+            .register(process.env.PUBLIC_URL + "/service-worker.js")
             .then(() => {
                 console.log("Service worker registered");
             })
