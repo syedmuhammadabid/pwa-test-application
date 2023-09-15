@@ -1,8 +1,9 @@
 // self.skipWaiting();
 
-const staticCacheName = `site-static-v${
-    Math.floor(Math.random() * 100) + Math.floor(Math.random() * 100)
-}`;
+// const staticCacheName = `site-static-v${
+//     Math.floor(Math.random() * 100) + Math.floor(Math.random() * 100)
+// }`;
+const staticCacheName = `site-static-v${process.env.REACT_APP_VERSION}`;
 const assets = ["/logo192.png", "/logo512.png"];
 
 // install event
@@ -39,4 +40,10 @@ self.addEventListener("fetch", (evt) => {
             return cacheRes || fetch(evt.request);
         })
     );
+});
+
+self.addEventListener("message", function (event) {
+    if (event.data.action === "skipWaiting") {
+        self.skipWaiting();
+    }
 });

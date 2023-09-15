@@ -14,6 +14,18 @@ if (isBrowser) {
 
 compareAppVersion();
 
+let newWorker;
+
+function showUpdateBar() {
+    let snackbar = document.getElementById("snackbar");
+    snackbar.className = "show";
+}
+
+// The click event on the pop up notification
+document.getElementById("reload").addEventListener("click", function () {
+    newWorker.postMessage({ action: "skipWaiting" });
+});
+
 if (isBrowser && "serviceWorker" in navigator) {
     navigator.serviceWorker.getRegistrations().then(function (registrations) {
         for (let registration of registrations) {
@@ -23,12 +35,37 @@ if (isBrowser && "serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker
             .register(process.env.PUBLIC_URL + "/service-worker.js")
-            .then(() => {
+            .then((reg) => {
                 console.log("Service worker registered");
+
+                reg.addEventListener("updatefound", () => {
+                    // A wild service worker has appeared in reg.installing!
+                    newWorker = reg.installing;
+
+                    newWorker.addEventListener("statechange", () => {
+                        // Has network.state changed?
+                        switch (newWorker.state) {
+                            case "installed":
+                                if (navigator.serviceWorker.controller) {
+                                    // new update available
+                                    showUpdateBar();
+                                }
+                                // No update available
+                                break;
+                        }
+                    });
+                });
             })
             .catch((err) => {
                 console.log("Service worker registration failed", err);
             });
+    });
+
+    let refreshing;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (refreshing) return;
+        window.location.reload();
+        refreshing = true;
     });
 }
 
